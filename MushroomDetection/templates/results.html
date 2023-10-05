@@ -1,0 +1,2110 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Mushroom Classification Report</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+		.two-images-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 20px auto;
+			padding: 10px;
+			width: 80%;
+			max-width: 1200px;
+		}
+		.image {
+			flex: 1;
+			margin: 10px;
+			padding: 10px;
+		}
+		.image img {
+			max-width: 100%;
+			height: auto;
+			opacity: 0.95;
+			border: 10px solid white;
+		}
+		.subtitle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+			margin: 10px 0;
+			padding: 10px;
+			padding-left: 10px;
+			background-color: white;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+		}
+        .chart-container {
+            display: inline-block;
+            width: 45%;
+            margin: 20px;
+			opacity: 0.95;
+			box-shadow: 2px 2px 4px rgba(88, 88, 88, 0.1);
+        }
+        .title-container {
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            margin: 20px;
+			background-color: white;
+			padding: 10px;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+		}
+		body {
+			background-image: url("https://images2.alphacoders.com/109/1095024.jpg");
+			background-repeat: repeat;
+			background-attachment: fixed;
+			background-size: cover;
+			opacity: 0.95;
+		}
+
+		.image-container {
+        display: flex;
+        justify-content: center;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding: 10px;
+		opacity: 0.95;
+		}
+		img {
+			border: 10px solid #fff;
+		}
+		.image2-container {
+        display: inline-block;
+		justify-content: right;
+		margin-top: 0;
+		opacity: 0.95;
+		}
+		img {
+			border: 10px solid #fff;
+		}
+		.p-container {
+		display: inline-block;
+		justify-content: center;
+		opacity: 0.95;
+		margin-bottom: 20px
+		}
+		.intro-container {
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            margin: 20px;
+			background-color: white;
+			padding: 10px;
+			opacity: 0.95;
+		}
+		.intro-sentence {
+			display: flex;
+			font-size: 30px;
+			font-family: 'Open Sans', sans-serif;
+			justify-content: center;
+			padding: 10px;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+			color: {{ colour }};
+		}
+		.table {
+		display: flex;
+		opacity: 0.95;
+		justify-content: center;
+		background-color: white;
+		vertical-align: top;
+		margin: 20px;
+		padding: 10px
+		}
+		img {
+			border: 10px solid #fff;
+		}
+		td {
+		vertical-align: center;
+		}
+		.text-sentence {
+			display: flex;
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+			justify-content: center;
+			margin-top: 0;
+			margin-bottom: 0;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+			color: {{ colour }};
+		}
+		@media only screen and (max-width: 768px) {
+		.chart-container {
+			width: 90%;
+			margin: 20px auto;
+		}
+		}
+    </style>
+	</head>
+	<body>
+		<div class="title-container" style="color: {{colour}}">
+			<h1>Species Identified: <em>{{ species_name }}</em></h1>
+		</div>
+
+		<div style="float:center;" class="two-images-container">
+			<div style="float:center;" class="image">
+				<img src="{{ image_link }}" alt="{{ image_link }}">
+				<div class="subtitle" style="float:center; color: {{colour}}">{{ species_name }} image</div>
+			</div>
+			<div style="float:center;" class="image">
+				<img src="{{ image_link_input }}" alt="{{ image_link_input }}">
+				<div class="subtitle" style="float:center; color: {{colour}}">Your image</div>
+			</div>
+		</div>
+
+		<div class="intro-container">
+			<p class="intro-sentence">This species is {{ edibility }}. {{ spotting_images }}</p>
+		</div>
+
+		<div class="chart-container">
+			<div id="chart1"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart2"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart3"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart4"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart5"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart6"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart7"></div>
+		</div>
+		{% if abundances_fig %}
+		<div class="chart-container">
+			<div id="chart8"></div>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<div class="table">
+			<h1 class="intro-sentence">Spotted {{ species_name }} Mushrooms</h1>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_0 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_0 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-0" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_0 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_1 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_1 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_1 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-1" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_1 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_2 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_2 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_2 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-2" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_2 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_3 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_3 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_3 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-3" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_3 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_4 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_4 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_4 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-4" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_4 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_5 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_5 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_5 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-5" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_5 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_6 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_6 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_6 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-6" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_6 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_7 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_7 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_7 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-7" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_7 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_8 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_8 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_8 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-8" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_8 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_9 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_9 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_9 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-9" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_9 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+
+		{% if spotting_geo_fig_all %}
+		<div class="image-container">
+			<div id="spotting-map-all"></div>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_all %}
+		<div class="table">
+			<table>
+			<tr>
+				<td>
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-country-pie-fig"></div>
+				</div>
+				</td>
+				<td>
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-country-fig"></div>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ continent_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart1', fig_data.data, fig_data.layout);
+			});
+			
+			$(document).ready(function() {
+			var fig_json = {{ geo_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart2', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ mat_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart3', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ biome_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart4', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ sample_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart5', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ map_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart6', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ pH_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart7', fig_data.data, fig_data.layout);
+			});
+		</script>
+
+		{% if abundances_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ abundances_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart8', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_0 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-0', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_1 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_1 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-1', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_2 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_2 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-2', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_3 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_3 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-3', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_4 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_4 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-4', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_5 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_5 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-5', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_6 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_6 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-6', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_7 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_7 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-7', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_8 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_8 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-8', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_9 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_9 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-9', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_all %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_all | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-all', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_country_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_country_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-country-fig', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_country_pie_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_country_pie_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-country-pie-fig', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+	</body>
+</html>
+
+
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+
+
+		<meta charset="UTF-8">
+		<title>Mushroom Classification Report</title>
+		<!-- Your other CSS and JavaScript links here -->
+		<style>
+			/* Your existing CSS styles */
+			.home-button {
+				position: absolute;
+				top: 10px;
+				left: 10px;
+				padding: 10px 20px;
+				background-color: #6482a1; /* Blue color, you can change this */
+				color: white;
+				text-decoration: aqua;
+				border-radius: 5px;
+			}
+		</style>
+	</head>
+	<body>
+		<a href="http://127.0.0.1:5000/" class="home-button">Home</a>
+		<!-- Your existing HTML content here -->
+		
+	<meta charset="UTF-8">
+	<title>Mushroom Classification Report</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+		.two-images-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 20px auto;
+			padding: 10px;
+			width: 80%;
+			max-width: 1200px;
+		}
+		.image {
+			flex: 1;
+			margin: 10px;
+			padding: 10px;
+		}
+		.image img {
+			max-width: 100%;
+			height: auto;
+			opacity: 0.95;
+			border: 10px solid rgb(197, 28, 28);
+		}
+		.subtitle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+			margin: 10px 0;
+			padding: 10px;
+			padding-left: 10px;
+			background-color: rgba(27, 7, 7, 0.675);
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+		}
+        .chart-container {
+            display: inline-block;
+            width: 45%;
+            margin: 20px;
+			opacity: 0.95;
+			box-shadow: 2px 2px 4px rgba(88, 88, 88, 0.1);
+        }
+        .title-container {
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            margin: 50px;
+			background-color: rgba(255, 255, 255, 0.864);
+			padding: 10px;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+		}
+		body {
+			background-image: url("https://images5.alphacoders.com/754/754056.jpg");
+			background-repeat: repeat;
+			background-attachment: fixed;
+			background-size: cover;
+			opacity: 0.95;
+		}
+
+		.image-container {
+        display: flex;
+        justify-content: center;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding: 10px;
+		opacity: 0.95;
+		}
+		img {
+			border: 10px solid #000000;
+		}
+		.image2-container {
+        display: inline-block;
+		justify-content: right;
+		margin-top: 0;
+		opacity: 0.95;
+		}
+		img {
+			border: 10px solid #000000;
+		}
+		.p-container {
+		display: inline-block;
+		justify-content: center;
+		opacity: 0.95;
+		margin-bottom: 20px
+		}
+		.intro-container {
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            margin: 20px;
+			background-color: rgba(9, 1, 1, 0.505);
+			padding: 10px;
+			opacity: 0.95;
+		}
+		.intro-sentence {
+			display: flex;
+			font-size: 30px;
+			font-family: 'Open Sans', sans-serif;
+			justify-content: center;
+			padding: 10px;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+			color: {{ colour }};
+		}
+		.table {
+		display: flex;
+		opacity: 0.95;
+		justify-content: center;
+		background-color: white;
+		vertical-align: top;
+		margin: 20px;
+		padding: 10px
+		}
+		img {
+			border: 10px solid #fff;
+		}
+		td {
+		vertical-align: center;
+		}
+		.text-sentence {
+			display: flex;
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+			justify-content: center;
+			margin-top: 0;
+			margin-bottom: 0;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+			color: {{ colour }};
+		}
+		@media only screen and (max-width: 768px) {
+		.chart-container {
+			width: 90%;
+			margin: 50px auto;
+		}
+		}
+    </style>
+	</head>
+	<body>
+		<div class="title-container" style="color: {{colour}}">
+			<h1>Species Identified: <em>{{ species_name }}</em></h1>
+		</div>
+
+		<div style="float:center;" class="two-images-container">
+			<div style="float:center;" class="image">
+				<img src="{{ image_link }}" alt="{{ image_link }}">
+				<div class="subtitle" style="float:center; color: {{colour}}">{{ species_name }} image</div>
+			</div>
+			<div style="float:center;" class="image">
+				<img src="{{ image_link_input }}" alt="{{ image_link_input }}">
+				<div class="subtitle" style="float:center; color: {{colour}}">Your image</div>
+			</div>
+		</div>
+
+		<div class="intro-container">
+			<p class="intro-sentence">This species is {{ edibility }}. {{ spotting_images }}</p>
+		</div>
+
+		<div class="chart-container">
+			<div id="chart1"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart2"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart3"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart4"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart5"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart6"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart7"></div>
+		</div>
+		{% if abundances_fig %}
+		<div class="chart-container">
+			<div id="chart8"></div>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<div class="table">
+			<h1 class="intro-sentence">Spotted {{ species_name }} Mushrooms</h1>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_0 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_0 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-0" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_0 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_1 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_1 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_1 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-1" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_1 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_2 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_2 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_2 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-2" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_2 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_3 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_3 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_3 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-3" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_3 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_4 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_4 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_4 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-4" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_4 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_5 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_5 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_5 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-5" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_5 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_6 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_6 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_6 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-6" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_6 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_7 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_7 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_7 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-7" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_7 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_8 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_8 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_8 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-8" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_8 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_9 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<div class="image2-container">
+						<img src="{{ spotting_images_9 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_9 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-map-9" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_9 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+
+		{% if spotting_geo_fig_all %}
+		<div class="image-container">
+			<div id="spotting-map-all"></div>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_all %}
+		<div class="table">
+			<table>
+			<tr>
+				<td>
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-country-pie-fig"></div>
+				</div>
+				</td>
+				<td>
+				<!-- Plotly Geomap -->
+				<div class="image2-container">
+					<div id="spotting-country-fig"></div>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ continent_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart1', fig_data.data, fig_data.layout);
+			});
+			
+			$(document).ready(function() {
+			var fig_json = {{ geo_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart2', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ mat_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart3', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ biome_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart4', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ sample_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart5', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ map_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart6', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ pH_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart7', fig_data.data, fig_data.layout);
+			});
+		</script>
+
+		{% if abundances_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ abundances_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart8', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_0 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-0', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_1 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_1 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-1', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_2 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_2 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-2', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_3 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_3 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-3', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_4 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_4 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-4', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_5 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_5 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-5', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_6 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_6 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-6', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_7 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_7 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-7', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_8 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_8 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-8', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_9 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_9 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-9', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_all %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_all | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-all', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_country_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_country_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-country-fig', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_country_pie_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_country_pie_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-country-pie-fig', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+	</body>
+	</html>
+	
+	
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+	<meta charset="UTF-8">
+	<title>Mushroom Classification Report</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<style>
+		.two-images-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin: 20px auto;
+			padding: 10px;
+			width: 80%;
+			max-width: 1200px;
+		}
+		.image {
+			flex: 1;
+			margin: 10px;
+			padding: 10px;
+		}
+		.image img {
+			max-width: 100%;
+			height: auto;
+			opacity: 0.95;
+			border: 10px solid white;
+		}
+		.subtitle {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+			margin: 10px 0;
+			padding: 10px;
+			padding-left: 10px;
+			background-color: white;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+		}
+        .chart-container {
+            display: inline-block;
+            width: 45%;
+            margin: 20px;
+			opacity: 0.95;
+			box-shadow: 2px 2px 4px rgba(88, 88, 88, 0.1);
+        }
+        .title-container {
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            margin: 20px;
+			background-color: white;
+			padding: 10px;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+		}
+		body {
+			background-image: url("https://images2.alphacoders.com/109/1095024.jpg");
+			background-repeat: repeat;
+			background-attachment: fixed;
+			background-size: cover;
+			opacity: 0.95;
+		}
+
+		.image-container {
+        display: flex;
+        justify-content: center;
+		margin-top: 10px;
+		margin-bottom: 10px;
+		padding: 10px;
+		opacity: 0.95;
+		}
+		img {
+			border: 10px solid #fff;
+		}
+		.image2-container {
+        display: inline-block;
+		justify-content: right;
+		margin-top: 0;
+		opacity: 0.95;
+		}
+		img {
+			border: 10px solid #fff;
+		}
+		.p-container {
+		display: inline-block;
+		justify-content: center;
+		opacity: 0.95;
+		margin-bottom: 20px
+		}
+		.intro-container {
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+            text-align: center;
+            margin: 20px;
+			background-color: white;
+			padding: 10px;
+			opacity: 0.95;
+		}
+		.intro-sentence {
+			display: flex;
+			font-size: 30px;
+			font-family: 'Open Sans', sans-serif;
+			justify-content: center;
+			padding: 10px;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+			color: {{ colour }};
+		}
+		.table {
+		display: flex;
+		opacity: 0.95;
+		justify-content: center;
+		background-color: white;
+		vertical-align: top;
+		margin: 20px;
+		padding: 10px
+		}
+		img {
+			border: 10px solid #fff;
+		}
+		td {
+		vertical-align: center;
+		}
+		.text-sentence {
+			display: flex;
+			font-size: 22px;
+			font-family: 'Open Sans', sans-serif;
+			justify-content: center;
+			margin-top: 0;
+			margin-bottom: 0;
+			opacity: 0.95;
+			text-shadow: 2px 2px 4px rgba(88, 88, 88, 0.5);
+			color: {{ colour }};
+		}
+		@media only screen and (max-width: 768px) {
+		.chart-container {
+			width: 90%;
+			margin: 20px auto;
+		}
+		}
+    </style>
+	</head>
+	<body>
+		<div class="title-container" style="color: {{colour}}">
+			<h1>Species Identified: <em>{{ species_name }}</em></h1>
+		</div>
+
+		<div style="float:center;" class="two-images-container">
+			<div style="float:center;" class="image">
+				<img src="{{ image_link }}" alt="{{ image_link }}">
+				<div class="subtitle" style="float:center; color: {{colour}}">{{ species_name }} image</div>
+			</div>
+			<div style="float:center;" class="image">
+				<img src="{{ image_link_input }}" alt="{{ image_link_input }}">
+				<div class="subtitle" style="float:center; color: {{colour}}">Your image</div>
+			</div>
+		</div>
+
+		<div class="intro-container">
+			<p class="intro-sentence">This species is {{ edibility }}. {{ spotting_images }}</p>
+		</div>
+
+		<div class="chart-container">
+			<div id="chart1"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart2"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart3"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart4"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart5"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart6"></div>
+		</div>
+		<div class="chart-container">
+			<div id="chart7"></div>
+		</div>
+		{% if abundances_fig %}
+		<div class="chart-container">
+			<div id="chart8"></div>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<div class="table">
+			<h1 class="intro-sentence">Spotted {{ species_name }} Mushrooms</h1>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions -->
+					<!--
+					<div class="image2-container">
+						<img src="{{ spotting_images_0 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_0 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap 
+				<div class="image2-container">
+					<div id="spotting-map-0" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_0 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_1 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions 
+					<div class="image2-container">
+						<img src="{{ spotting_images_1 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_1 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap 
+				<div class="image2-container">
+					<div id="spotting-map-1" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_1 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_2 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions 
+					<div class="image2-container">
+						<img src="{{ spotting_images_2 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_2 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap 
+				<div class="image2-container">
+					<div id="spotting-map-2" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_2 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_3 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions 
+					<div class="image2-container">
+						<img src="{{ spotting_images_3 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_3 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap 
+				<div class="image2-container">
+					<div id="spotting-map-3" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_3 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_4 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_4 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_4 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-4" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_4 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_5 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_5 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_5 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-5" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_5 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_6 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_6 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_6 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-6" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_6 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_7 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_7 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_7 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-7" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_7 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_8 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_8 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_8 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-8" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_8 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_9 %}
+		<div class="table">
+			<table>
+			<tr>
+				<td class="image2-container">
+					<!-- Image and Text Descriptions --
+					<div class="image2-container">
+						<img src="{{ spotting_images_9 }}" style="max-height: 400px; justify-content: right;">
+						<pre>
+							<p class="text-sentence" style="vertical-align: top;">{{ spotting_date_9 }}					</p>
+						</pre>
+					</div>
+				</td>
+				<td class="image2-container">
+				<!-- Plotly Geomap --
+				<div class="image2-container">
+					<div id="spotting-map-9" style="max-height: 400px; justify-content: right;"></div>
+					<pre>
+					<p class="text-sentence" style="vertical-align: top;">					{{ spotting_location_9 }}					</p>
+					</pre>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+
+		{% if spotting_geo_fig_all %}
+		<div class="image-container">
+			<div id="spotting-map-all"></div>
+		</div>
+		{% endif %}
+
+		{% if spotting_geo_fig_all %}
+		<div class="table">
+			<table>
+			<tr>
+				<td>
+				<!-- Plotly Geomap ->
+				<div class="image2-container">
+					<div id="spotting-country-pie-fig"></div>
+				</div>
+				</td>
+				<td>
+				<!-- Plotly Geomap ->
+				<div class="image2-container">
+					<div id="spotting-country-fig"></div>
+				</div>
+				</td>
+			</tr>
+			</table>
+		</div>
+		{% endif %}
+
+
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ continent_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart1', fig_data.data, fig_data.layout);
+			});
+			
+			$(document).ready(function() {
+			var fig_json = {{ geo_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart2', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ mat_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart3', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ biome_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart4', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ sample_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart5', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ map_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart6', fig_data.data, fig_data.layout);
+			});
+
+			$(document).ready(function() {
+			var fig_json = {{ pH_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart7', fig_data.data, fig_data.layout);
+			});
+		</script>
+
+		{% if abundances_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ abundances_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('chart8', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_0 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_0 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-0', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_1 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_1 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-1', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_2 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_2 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-2', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_3 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_3 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-3', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_4 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_4 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-4', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_5 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_5 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-5', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_6 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_6 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-6', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_7 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_7 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-7', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_8 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_8 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-8', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_9 %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_9 | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-9', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_geo_fig_all %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_geo_fig_all | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-map-all', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_country_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_country_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-country-fig', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %}
+
+		{% if spotting_country_pie_fig %}
+		<script type="text/javascript">
+			$(document).ready(function() {
+			var fig_json = {{ spotting_country_pie_fig | tojson }};
+			var fig_data = JSON.parse(fig_json);
+			Plotly.newPlot('spotting-country-pie-fig', fig_data.data, fig_data.layout);
+			});
+		</script>
+		{% endif %} --
+
+	</body>
+</html>-->

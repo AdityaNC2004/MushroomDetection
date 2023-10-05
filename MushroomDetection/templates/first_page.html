@@ -1,0 +1,299 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Mushroom Classification App</title>
+	<style>
+		body {
+			background-color: #ffffff;
+			font-family: 'Open Sans', sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		
+		header {
+            background-image: url('https://images5.alphacoders.com/754/754056.jpg');
+            background-size: cover;
+            background-position: center center;
+            height: 900px;
+            position: relative;
+		}
+		
+		h1 {
+			text-align: center;
+			margin-top: 50px;
+			font-size: 36px;
+			color: #333;
+		}
+		
+		form {
+			margin-top: 30px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		
+		label {
+			font-size: 24px;
+			color: #333;
+			margin-bottom: 10px;
+		}
+		
+		input[type="file"] {
+			border: 2px solid #ccc;
+			border-radius: 4px;
+			padding: 8px;
+			font-size: 16px;
+			background-color: #fff;
+			color: #333;
+			box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+			width: 300px;
+			margin-bottom: 20px;
+			text-align: center;
+		}
+		
+		input[type="submit"] {
+			background-color: #333;
+			color: #fff;
+			font-size: 20px;
+			border-radius: 4px;
+			padding: 10px 20px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		
+		input[type="submit"]:hover {
+			background-color: #555;
+		}
+	</style>
+</head>
+<body>
+	<header></header>
+	<h1>Mushroom Image Classifier</h1>
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <label for="imageInput">Select an image:</label>
+        <input type="file" id="imageInput" name="imageInput">
+        <input type="submit" value="Submit">
+    </form>
+
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mushroom Classifier</title>
+    <style>
+        body {
+            background-image: url('https://images5.alphacoders.com/754/754056.jpg'); /* Replace 'mushroom-background.jpg' with your image file */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 30px;
+            margin-top: 250px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            display: block;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        input[type="file"] + label {
+            text-align: center;
+        }
+
+        #submit-btn {
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .select-button:hover, .click-button:hover {
+        background-color: #2980b9;
+        }
+        #submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mushroom Classifier</h1>
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <input type="file" id="imageInput" name="imageInput" accept=".jpg, .png, .jpeg" required>
+            <label for="imageInput">Select an image:</label>
+            <br>
+            <input type="submit" value="Submit">
+            
+        </form>
+    </div>
+</body>
+
+<!-- <label for="imageInput">Select an image:</label>
+<input type="file" id="imageInput" name="imageInput">
+<input type="submit" value="Submit"> 
+
+</html>
+
+
+ -->
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... (your existing head content) ... -->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mushroom Classifier</title>
+    <style>
+        body {
+            background-image: url('https://images5.alphacoders.com/754/754056.jpg'); /* Replace 'mushroom-background.jpg' with your image file */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 30px;
+            margin-top: 250px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        label {
+            display: block;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+
+        input[type="file"] + label {
+            text-align: center;
+        }
+
+        #submit-btn {
+            background-color: #2ecc71;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .select-button:hover, .click-button:hover {
+        background-color: #2980b9;
+        }
+        #submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Mushroom Classifier</h1>
+        <form action="#" method="POST" enctype="multipart/form-data">
+            <!-- Add a drop zone div -->
+            <div id="dropZone" class="drop-zone">
+                <p>Drag & Drop an image here or</p>
+                <label for="imageInput">Select an image:</label>
+                <input type="file" id="imageInput" name="imageInput" accept=".jpg, .png, .jpeg" required>
+                <!-- Add a <span> element to display the uploaded file name -->
+                <span id="uploadedFileName"></span>
+            </div>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+    <script>
+        const dropZone = document.getElementById('dropZone');
+        const imageInput = document.getElementById('imageInput');
+        const uploadedFileName = document.getElementById('uploadedFileName');
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            
+            if (file) {
+                const fileName = file.name;
+                uploadedFileName.textContent = 'Selected File: ' + fileName;
+                imageInput.files = e.dataTransfer.files; // Update the input's selected file
+            }
+        });
+
+        imageInput.addEventListener('change', () => {
+            const fileName = imageInput.files[0] ? imageInput.files[0].name : 'No file selected';
+            uploadedFileName.textContent = 'Selected File: ' + fileName;
+        });
+    </script>
+    </body>
+</html>
